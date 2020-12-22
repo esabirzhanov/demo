@@ -28,7 +28,8 @@ public class DeviceController {
     }
 
     /** retrieve device by serial number
-     * I assume serial numbers are unique for each device */
+     * I assume the serial number is unique for each device
+     * and could be used is a device id */
     @GetMapping("/devices/{id}")
     public Device bySerialNumber(@PathVariable String id) {
         Device device = repository.findBySerialNumber(id);
