@@ -33,7 +33,7 @@ public class DeviceController {
     public Device bySerialNumber(@PathVariable String id) {
         Device device = repository.findBySerialNumber(id);
         if (device == null)
-            throw new DeviceNotFoundException("ER004");
+            throw new DeviceNotFoundException("serial.number.not.found");
         else
             return device;
     }
@@ -45,7 +45,7 @@ public class DeviceController {
         validateDevice(newDevice);
         Device device = repository.findBySerialNumber(id);
         if (device == null) {
-            throw new DeviceNotFoundException("ER004");
+            throw new DeviceNotFoundException("serial.number.not.found");
         }
         device.setName(newDevice.getName());
         device.setMachineCode(newDevice.getMachineCode());
@@ -60,7 +60,7 @@ public class DeviceController {
     public List<Device> byMachineCode(@RequestParam String q) {
         List<Device> devices = repository.findByMachineCode(q);
         if (devices.isEmpty())
-            throw new DeviceNotFoundException("ER002");
+            throw new DeviceNotFoundException("machine.code.not.found");
         else
             return devices;
     }
@@ -72,10 +72,10 @@ public class DeviceController {
         List<String> errors = new ArrayList<>();
         Matcher matcher = serialNumberPattern.matcher(newDevice.getSerialNumber());
         if (!matcher.find()) {
-            errors.add("ER003");
+            errors.add("serial.number.invalid");
         }
         if (newDevice.getMachineCode().isEmpty()) {
-            errors.add("ER001");
+            errors.add("machine.code.invalid");
         }
         if (!errors.isEmpty()) {
             throw new DeviceNotValidException(errors);

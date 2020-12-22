@@ -1,5 +1,8 @@
 package com.example.demo.errors;
 
+import com.example.demo.LoadDatabase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -13,6 +16,7 @@ import java.util.List;
 
 @ControllerAdvice
 public class DeviceControllerAdvice {
+    private static final Logger log = LoggerFactory.getLogger(DeviceControllerAdvice.class);
 
     @Autowired
     private Environment env;
@@ -21,10 +25,10 @@ public class DeviceControllerAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(DeviceNotFoundException nfe) {
-        String resourceKey = env.getProperty(nfe.getMessage());
-        String message = env.getProperty(resourceKey);
-        return new ErrorResponse(resourceKey, nfe.getMessage(), message);
-
+        String resourceKey = nfe.getKey();
+        String errorCode = env.getProperty(resourceKey.concat(".errorCode"));
+        String message = env.getProperty(resourceKey.concat(".message"));
+        return new ErrorResponse(resourceKey, errorCode, message);
     }
 
     @ExceptionHandler(DeviceNotValidException.class)
@@ -33,9 +37,10 @@ public class DeviceControllerAdvice {
     public ErrorsResponse handleNotValidException(DeviceNotValidException nve) {
         List<String> errors = nve.getErrors();
         List<ErrorResponse> responses = new ArrayList<>();
-        for(String error: errors) {
-            String resourceKey = env.getProperty(error);
-            responses.add(new ErrorResponse(resourceKey, error, env.getProperty(resourceKey)));
+        for(String resourceKey: errors) {
+            String errorCode = env.getProperty(resourceKey.concat(".errorCode"));
+            String message = env.getProperty(resourceKey.concat(".message"));
+            responses.add(new ErrorResponse(resourceKey, errorCode, message));
         }
         return new ErrorsResponse(responses);
     }
