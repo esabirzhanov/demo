@@ -14,7 +14,7 @@ public class Device {
 
     public Device() {}
 
-    public Device(String name, String serialNumber, String machineCode) throws Exception {
+    public Device(String name, String serialNumber, String machineCode)  {
         this.name = name;
         this.machineCode = machineCode;
         this.serialNumber = serialNumber;

@@ -13,10 +13,13 @@ import java.util.regex.Pattern;
 
 @RestController
 public class DeviceController {
-    private Pattern serialNumberPattern = Pattern.compile("^[a-zA-Z0-9\\-]+$");
+    /** The serial number entered can include a - z, A - Z, 0 - 9 and hyphen ..
+     * I assume no hyphen at both start and end */
+   private Pattern serialNumberPattern = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9]$");
+
     private final DeviceRepository repository;
 
-    DeviceController(DeviceRepository repository) {
+    public DeviceController(DeviceRepository repository) {
         this.repository = repository;
     }
 
@@ -28,8 +31,8 @@ public class DeviceController {
     }
 
     /** retrieve device by serial number
-     * I assume the serial number is unique for each device
-     * and could be used is a device id */
+     * I assume the serial number is unique to each device
+     * and could be used as a device id .. hope the assumption is correct :)  */
     @GetMapping("/devices/{id}")
     public Device bySerialNumber(@PathVariable String id) {
         Device device = repository.findBySerialNumber(id);
@@ -68,8 +71,8 @@ public class DeviceController {
 
     private void validateDevice(Device newDevice) {
         /** when we validate an object
-         * it is probably better to return the whole list of errors rather than
-         * return them one by one  */
+         * I assume it is better to return whole list of the validation errors
+         * rather than return them one by one  */
         List<String> errors = new ArrayList<>();
         Matcher matcher = serialNumberPattern.matcher(newDevice.getSerialNumber());
         if (!matcher.find()) {
