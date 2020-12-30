@@ -23,7 +23,11 @@ public class DeviceController {
         this.repository = repository;
     }
 
-    /* create a new device */
+    /** create a new device ..
+     * I don't check the serial number's uniqueness
+     * when I insert a new  device.. it is unknown what kind of error
+     * I have to report in this case
+     * */
     @PostMapping("/devices")
     Device newDevice(@RequestBody Device newDevice) {
         validateDevice(newDevice);
@@ -66,7 +70,7 @@ public class DeviceController {
     }
 
     private void validateDevice(Device newDevice) {
-        /** when we validate an object
+        /** when we validate a device
          * I assume it is better to return whole list of the validation errors
          * rather than return them one by one  */
         List<String> errors = new ArrayList<>();
