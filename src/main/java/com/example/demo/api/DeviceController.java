@@ -32,14 +32,12 @@ public class DeviceController {
 
     /** retrieve device by serial number
      * I assume the serial number is unique to each device
-     * and could be used as a device id .. hope the assumption is correct :)  */
+     * and could be used as a device id .. hope the assumption is correct :)
+     */
     @GetMapping("/devices/{id}")
-    public Device bySerialNumber(@PathVariable String id) {
-        Device device = repository.findBySerialNumber(id);
-        if (device == null)
-            throw new DeviceNotFoundException("serial.number.not.found");
-        else
-            return device;
+    Device bySerialNumber(@PathVariable String id) {
+        return repository.findBySerialNumber(id)
+                .orElseThrow( () -> new DeviceNotFoundException("serial.number.not.found"));
     }
 
     /** I assume we can update the name and machine code for
@@ -47,10 +45,8 @@ public class DeviceController {
     @PutMapping("/devices/{id}")
     Device updateDevice(@RequestBody Device newDevice, @PathVariable String id) {
         validateDevice(newDevice);
-        Device device = repository.findBySerialNumber(id);
-        if (device == null) {
-            throw new DeviceNotFoundException("serial.number.not.found");
-        }
+        Device device = repository.findBySerialNumber(id)
+                .orElseThrow( () -> new DeviceNotFoundException("serial.number.not.found"));
         device.setName(newDevice.getName());
         device.setMachineCode(newDevice.getMachineCode());
         return repository.save(device);

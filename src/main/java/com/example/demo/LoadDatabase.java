@@ -16,7 +16,6 @@ public class LoadDatabase {
         return args -> {
             log.info("Preloading " + repository.save(new Device("Device 1", "12-1222", "abc")));
             log.info("Preloading " + repository.save(new Device("Device 2", "3455670-22222", "xyz")));
-            log.info("Preloading " + repository.save(new Device("Device 3", "3455670-22222", "qwe")));
         };
     }
 }
