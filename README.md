@@ -34,26 +34,33 @@ Json error messages:
 [ { 
 
 "resourceKey": "machine.code.not.found",
+
 "errorCode": "ER002",
+
 "message": "The machine code does not match our records." 
 
 }, { 
 
 "resourceKey": "machine.code.invalid",
+
 "errorCode": "ER001",
+
 "message": "The machine code is incorrect. Check the Machine code you provided and try again." 
 
 }, {
 
 "resourceKey": "serial.number.invalid",
-"errorCode": "ER003",
-"message": "The serial number entered can include a - z, A - Z, 0 - 9 and hyphen. Please correct your 
 
+"errorCode": "ER003",
+
+"message": "The serial number entered can include a - z, A - Z, 0 - 9 and hyphen. Please correct your 
 entry." 
 
 }, {
 "resourceKey": "serial.number.not.found",
+
 "errorCode": "ER004",
+
 "message": "The serial number does not match our records." 
 
 } ] 
