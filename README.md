@@ -57,6 +57,7 @@ Json error messages:
 entry." 
 
 }, {
+
 "resourceKey": "serial.number.not.found",
 
 "errorCode": "ER004",
